@@ -1,21 +1,28 @@
 <html>
   <head>
+		<link rel="stylesheet" type="text/css" href="styles.css" />
     <title>ByteLockr</title>
   </head>
 
   <body>
-    <form action="upload_file.php" method="POST" enctype="multipart/form-data">
-      <label for="file">File:</label>
-      <input type="file" name="file" id="file"><br>
+		<div class="top">
+			<p class="name" > ByteLockr  <span><a href="faq.html"> FAQ </a></span></p>
+		</div>
+		<div class="content">
+    	<form action="upload_file.php" method="POST" enctype="multipart/form-data">
+      	<input type="file" name="file" id="file"><br>
       
-      <label for="download_limit">Download Limit:</label>
-      <input type="number" name="download_limit" id="download_limit" min="0" max="100" value="0"><br>
+      	<label for="download_limit">Download Limit:</label>
+      	<input type="number" name="download_limit" id="download_limit" min="0" max="100" value="0">
+				(0 for unlimited)<br>
 
-      <label for="time_limit">Time Limit:</label>
-      <input type="number" name="time_limit" id="time_limit" min="0" max="48" value="48"><br>
+      	<label for="time_limit">Time Limit:</label>
+      	<input type="number" name="time_limit" id="time_limit" min="0" max="72" value="72">
+				(In hours, max 72)<br>
 
-      <input type="submit" name="upload" value="Upload">
-    </form>
-  </body>
+      	<input type="submit" name="upload" value="Upload">
+    	</form>
+  	</div>
+	</body>
 </html>
 

@@ -1,0 +1,41 @@
+a:link {text-decoration: none; color: white;}
+a:visited {text-decoration: none;}
+a:hover {text-decoration: underline;}
+a:active {text-decoration: none;}
+
+html, body
+{
+	font-family: Calibri;
+	margin: 0;
+	padding: 0;
+	font-size: 15pt;
+}
+
+div.top
+{
+	padding: 0px;
+	height: 40px;
+	background-color: dimgray;
+}
+
+p.name
+{
+	padding: 5px 10px;
+  color: white;
+	font: bold;
+	font-size: 15pt;
+}
+
+p.name span
+{
+	float: right;
+}
+
+div.content
+{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-top: -50px;
+	margin-left: -100px;
+}

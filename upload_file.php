@@ -16,45 +16,40 @@
       // check for a connection error
       if (mysqli_connect_errno()) {
         echo "Failed to connect to MySQL database: " . mysqli_connect_error();
-      } else {
-        echo "Connected";
-      }
+      } 
 
       $guid = "";
       do {
         // create our guid
-        for ($x = 0; $x < 14; $x++) {
-          if ($x == 4 || $x == 9) {
-            $guid = $guid . "-";
-          } else {
-            $guid = $guid . rand(0, 9);
-          }
-        }
+        $guid = random_string(4) . "-" . random_string(4) . "-" . random_string(4);
       } while (mysqli_fetch_array(mysqli_query($connection, "SELECT guid FROM files WHERE guid={$guid} LIMIT 1")));
 
       // generate the file's password
-      $password = "";
-      for ($x = 0; $x < 15; $x++) {
-        $password = $password . rand(0, 9);
-      }
+      $password = random_string(15);
 
       $expiry = mysql_real_escape_string(sanitize_input($_POST["time_limit"]));
       $download_limit = mysql_real_escape_string(sanitize_input($_POST["download_limit"]));
       $filename = sanitize_input($_FILES["file"]["name"]);
       $filename_sql = mysql_real_escape_string($filename);
 
+      // check to make sure our values are numbers
+      check_num($expiry);
+      check_num($download_limit);
+
+      // 0 represents unlimited downloads
+      if ($download_limit  == 0) {
+        $download_limit = "NULL";
+      }
+
       $sql = "INSERT INTO files (filename, guid, expiry_date, download_limit, password) VALUES ('{$filename_sql}', '{$guid}', DATE_ADD(NOW(), INTERVAL {$expiry} HOUR), {$download_limit}, '{$password}')"; 
-      echo $sql;
       if (!mysqli_query($connection, $sql)) {
-        echo "Error: query error @ 47 of upload";
         die ('Error: ' . mysqli_error($connection));
       }
       
-      $result = move_uploaded_file($_FILES["file"]["tmp_name"], "/var/data/" . $_FILES["file"]["name"]);
+      $result = move_uploaded_file($_FILES["file"]["tmp_name"], "/var/data/" . $guid . "." . $_FILES["file"]["name"]);
       if ($result)
-      //if (true)
       {
-        echo "SUCCESS:--GUID: {$guid}\--PASSWORD: {$password}--DL LIMIT: {$download_limit}-- Expiry: {$expiry}";
+        echo "SUCCESS: <br/> Link: 192.168.1.9/resource.php?resource=" . $guid . "<br/> Password: " . $password;
       } else {
         echo "ERROR: " . $result;
       }
@@ -71,4 +66,24 @@
 
     return $input;
   }
+  
+  function check_num($num) {
+    if (!is_numeric($num)) {
+      header ("Location: error.html");
+      die();
+    }
+  }
+
+  function random_string($length) {
+    $string = "abcdefghijklmnopqrstuvwxyz" .
+              "ABCDEFGHIJKLMNOPQRSTUVWXYZ" .
+              "1234567890";
+
+    for ($x = 0; $x < $length; $x++) {
+      $output .= $string[rand(0, strlen($string) - 1)];
+    }
+
+    return $output;
+  }
 ?>
+
