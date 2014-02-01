@@ -1,14 +1,15 @@
 <html>
   <head>
-		<link rel="stylesheet" type="text/css" href="styles.css" />
+		<link rel="stylesheet" type="text/css" href="css/styles.css" />
     <title>ByteLockr</title>
   </head>
 
   <body>
 		<div class="top">
-			<p class="name" > ByteLockr  <span><a href="faq.html"> FAQ </a></span></p>
+			<p class="name" > <a href="index.html">ByteLockr</a>  <span><a href="faq.html">FAQ</a></span></p>
 		</div>
 		<div class="content">
+      <p style="font-size:45pt; font: bold;padding: 0; margin: 0;">Upload.</p>
     	<form action="upload_file.php" method="POST" enctype="multipart/form-data">
       	<input type="file" name="file" id="file"><br>
       
@@ -18,9 +19,9 @@
 
       	<label for="time_limit">Time Limit:</label>
       	<input type="number" name="time_limit" id="time_limit" min="0" max="72" value="72">
-				(In hours, max 72)<br>
+				(In hours, max 72)<br><br>
 
-      	<input type="submit" name="upload" value="Upload">
+      	<input style="float: right;" type="submit" name="upload" value="Upload">
     	</form>
   	</div>
 	</body>

@@ -6,7 +6,14 @@
   $connection = mysqli_connect("localhost", "root", "", "bytelockr");
 
   if (mysqli_connect_errno()) {
-    die("Error: " . mysqli_connect_error());
+    //die("Error: " . mysqli_connect_error());
+    header ("Location: error.html");
+    die ();
+  }
+
+  if ($resource == "") {
+    header ("Location: error.html");
+    die();
   }
 
   $sql = "SELECT filename, password, guid, download_limit FROM files WHERE expiry_date > now() AND guid='" . $resource . "' LIMIT 1";
@@ -40,9 +47,11 @@
       exit;
     } else {
       header ("Location: error.html");
+      die ();
     }
   } else {
     header ("Location: error.html");
+    die ();
   }
 
   function sanitize_input($input) {

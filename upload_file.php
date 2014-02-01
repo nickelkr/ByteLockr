@@ -3,19 +3,25 @@
   {
     if ($_FILES["file"]["error"] > 0)
     {
-      echo "ERROR: " . $_FILES["file"]["error"];
+      //echo "ERROR: " . $_FILES["file"]["error"];
+      header ("Location: error.html");
+      die ();
     }
 
     if (file_exists("/var/data/" . $_FILES["file"]["name"]))
     {
-      echo "File exists!";
+      //echo "File exists!";
+      header ("Location: error.html");
+      die ();
     } else {
       // create our database connection
       $connection = mysqli_connect("localhost", "root", "", "bytelockr");
 
       // check for a connection error
       if (mysqli_connect_errno()) {
-        echo "Failed to connect to MySQL database: " . mysqli_connect_error();
+        //echo "Failed to connect to MySQL database: " . mysqli_connect_error();
+        header ("Location: error.html");
+        die ();
       } 
 
       $guid = "";
@@ -43,20 +49,27 @@
 
       $sql = "INSERT INTO files (filename, guid, expiry_date, download_limit, password) VALUES ('{$filename_sql}', '{$guid}', DATE_ADD(NOW(), INTERVAL {$expiry} HOUR), {$download_limit}, '{$password}')"; 
       if (!mysqli_query($connection, $sql)) {
-        die ('Error: ' . mysqli_error($connection));
+        //die ('Error: ' . mysqli_error($connection));
+        header ("Location: error.html");
+        die ();
       }
       
       $result = move_uploaded_file($_FILES["file"]["tmp_name"], "/var/data/" . $guid . "." . $_FILES["file"]["name"]);
       if ($result)
       {
-        echo "SUCCESS: <br/> Link: 192.168.1.9/resource.php?resource=" . $guid . "<br/> Password: " . $password;
+        // echo "SUCCESS: <br/> Link: 192.168.1.9/resource.php?resource=" . $guid . "<br/> Password: " . $password;
+        include_once ("info.php");
       } else {
-        echo "ERROR: " . $result;
+        //echo "ERROR: " . $result;
+        header ("Location: error.html");
+        die ();
       }
 
     }
   } else {
-    echo "ERROR: File too large.";
+    //echo "ERROR: File too large.";
+    header ("Location: error.html");
+    die ();
   }
 
   function sanitize_input($input) {
